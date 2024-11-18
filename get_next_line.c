@@ -6,7 +6,7 @@
 /*   By: danielda <danielda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:46:42 by danielda          #+#    #+#             */
-/*   Updated: 2024/11/14 17:20:09 by danielda         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:29:59 by danielda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,22 @@ size_t ft_strlen(const char *s)
 
 int get_next_line(int fd, char **line)
 {
-	static char *remainder
+	static char *r
 	char buffer[BUFFER_SIZE + 1]
 	char *temp
 	int bytes_read
 
 	if (fd < 0 || !line || buffer_size <= 0)
 		return (-1);
-	while ()
+	while (bayts_reads = read(fd, buffer, buffer_size) < 0)
+	{
+		buffer [bayts_read] = '\0';
+	if (!r)
+	r = ft_strdup ("")
+	temp = ft_strjoin(r, buffer)
+			free(r);
+		r = temp;
+	if (ft_strchr(r, '\n'))
+		break ;
+	}
 }
