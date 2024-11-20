@@ -6,7 +6,7 @@
 /*   By: danielda <danielda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:46:42 by danielda          #+#    #+#             */
-/*   Updated: 2024/11/20 16:22:51 by danielda         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:35:13 by danielda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	get_next_line(int fd, char **line)
 	temp = read_fd(params)
 		free(buffer);
 	temp = get_current_line()
-		temp =  string_to_add()
+		temp = string_to_add()
 		return ();
 }
+
