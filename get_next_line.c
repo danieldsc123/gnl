@@ -6,7 +6,7 @@
 /*   By: danielda <danielda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:46:42 by danielda          #+#    #+#             */
-/*   Updated: 2024/11/20 16:35:13 by danielda         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:51:43 by danielda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,20 @@ char	*string_to_add(char *stash)
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*r;
-	char		buffer[BUFFER_SIZE + 1];
+	static char	*stash;
 	char		*temp;
 	int			bytes_read;
 
 	if (fd < 0 || !line || buffer_size <= 0)
 		return (-1);
-	while (bayts_reads = (read(fd, buffer, buffer_size) < 0))
-		buffer [bayts_read] = '\0';
-	temp = read_fd(params)
-		free(buffer);
-	temp = get_current_line()
-		temp = string_to_add()
-		return ();
+	stash = (read(fd, buffer, buffer_size) < 0)
+		if (!stash)
+		return (-1);
+	line = get_current_line(stash)
+		if (!(*line))
+		return (-1);
+	stash = string_to_add(stash);
+	if (!stash)
+		return (0);
+	return (-1);
 }
-
