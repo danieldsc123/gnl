@@ -6,88 +6,151 @@
 /*   By: danielda <danielda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:46:42 by danielda          #+#    #+#             */
-/*   Updated: 2024/11/20 16:51:43 by danielda         ###   ########.fr       */
+/*   Updated: 2024/11/23 21:00:18 by danielda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*read_fd(int fd, char *stash)
-{
-	char	*buffer;
-	int		bytes_read;
+#include "get_next_line.h"
 
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	while (!ft_strchr(stash, '\n'))
+char	*ft_strdup(const char *s)
+{
+	char		*copy;
+	int			i;
+	int			dest;
+
+	i = 0;
+	dest = 0;
+	while (s[dest] != '\0')
 	{
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
-		{
-			free(buffer);
-			if (bayts_read == 0)
-				return (stash);
-			return (NULL);
-		}
-	buffer[bytes_read] = '\0';
-	stash = ft_strjoin(stash, buffer);
-		if (!stash)
-			return (NULL);
-		return (stash);
+		dest++;
 	}
+	copy = (char *)malloc((dest + 1) * sizeof(char));
+	if (!copy)
+	{
+		return (NULL);
+	}
+	while (i < dest)
+	{
+		copy[i] = s[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
 }
 
-int	get_current_line(char *stash)
+char	*read_fd(int fd, char *stash)
+{
+	char		*buffer;
+	char		*temp;
+	long long	bytes_read;
+
+	bytes_read = 1;
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (free(buffer), NULL);
+	while (bytes_read != 0 && !ft_strchr(stash, '\n'))
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
+			return (free(buffer), free(stash), NULL);
+		buffer[bytes_read] = '\0';
+		if (!stash)
+			stash = ft_strdup("");
+		temp = stash;
+		stash = ft_strjoin(temp, buffer);
+		free(temp);
+	}
+	free (buffer);
+	return (stash);
+}
+
+char	*get_current_line(char *stash)
 {
 	int		i;
 	char	*string;
 
-	if (!stash[i] || !stash[0])
-		return (NULL);
 	i = 0;
+	if (!stash[i])
+		return (NULL);
 	while (stash[i] && stash[i] != '\n')
-	i++;
+		i++;
 	string = ft_substr(stash, 0, i + ft_endl(stash));
+	if (!string)
+	{
+		free (string);
+		return (NULL);
+	}
 	return (string);
 }
 
 char	*string_to_add(char *stash)
 {
-	char	*string;
+	char	*new_stash;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (stash[i] != '\0' && stash[i] != '\n')
 		i++;
 	if (!stash[i])
-		return (free(stash), NULL);
-	string = malloc(sizeof(char) * (ft_strlen(stash) - i));
-	if (!string)
+	{
+		free (stash);
 		return (NULL);
-	while (stash[++i])
-		string[j++] = stash[i];
-	string[j] = '\0';
+	}
+	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i));
+	if (!new_stash)
+	{
+		free(stash);
+		return (NULL);
+	}
+	i++;
+	while (stash[i] != '\0')
+		new_stash[j++] = stash[i++];
+	new_stash[j] = '\0';
 	free(stash);
-	return (string);
+	return (new_stash);
 }
 
-int	get_next_line(int fd, char **line)
+char	*get_next_line(int fd)
 {
-	static char	*stash;
-	char		*temp;
-	int			bytes_read;
+	static char	*stash = NULL;
+	char		*line;
 
-	if (fd < 0 || !line || buffer_size <= 0)
-		return (-1);
-	stash = (read(fd, buffer, buffer_size) < 0)
-		if (!stash)
-		return (-1);
-	line = get_current_line(stash)
-		if (!(*line))
-		return (-1);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stash = (read_fd(fd, stash));
+	if (!stash)
+		return (NULL);
+	line = get_current_line(stash);
+	if (!line || !(*line))
+	{
+		free(stash);
+		stash = (NULL);
+		return (NULL);
+	}
 	stash = string_to_add(stash);
 	if (!stash)
-		return (0);
-	return (-1);
+	{
+		free(stash);
+		stash = (NULL);
+	}
+	return (line);
 }
+/*
+#include <stdio.h>
+#include <fcntl.h>
+
+int main()
+{
+	int	fd = open("test.txt", O_RDONLY);
+	char	*a;
+
+	while ((a = get_next_line(fd)))
+	{
+		printf("%s", a);
+	}
+	//printf("%s", get_next_line(fd));
+	return (0);
+}
+*/

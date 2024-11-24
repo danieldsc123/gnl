@@ -6,7 +6,7 @@
 /*   By: danielda <danielda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:05:05 by danielda          #+#    #+#             */
-/*   Updated: 2024/11/19 17:55:58 by danielda         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:36:12 by danielda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	ft_endl(char	*buffer)
 
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while ((*s != '\0') && (*s != (char)c))
 	{
 		s++;
@@ -47,22 +49,29 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *) NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	char	*result;
-	size_t	len1;
-	size_t	len2;
+	char	*str_return;
+	int		length;
+	int		i;
+	int		j;
 
-	if (!s1 || !s2)
+	length = ft_strlen(s1) + ft_strlen(s2) + 1;
+	str_return = NULL;
+	str_return = malloc(length * sizeof(char));
+	if (!str_return)
 		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	result = (char *)malloc(len1 + len2 + 1);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, len1 + 1);
-	ft_strlcat(result, s2, len1 + len2 + 1);
-	return (result);
+	i = 0;
+	while (s1[i])
+	{
+		str_return[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+		str_return[i++] = s2[j++];
+	str_return[i] = 0;
+	return (str_return);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
